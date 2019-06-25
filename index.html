@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>TIC-TAC-TOE</title>
+	<link rel="stylesheet" href="index.css" type="text/css"/>
+	<link rel="shortcut icon" href="icon.ico"/>
+	<script type="text/javascript">
+		var turn = 1;
+		function markO(id)
+		{
+			/* FOR 2-PLAYER
+			if(document.getElementById(id).innerHTML == ""){
+			if(parseInt(turn%2) == 1)
+				markCell(id,"O");
+			else markCell(id,"X");
+			turn++;
+			setTimeout(function(){
+				if(!checkwin())
+				{
+					isdraw();
+				}}, 500);
+			}
+			*/
+			var x = document.getElementById(id);
+			if(x.innerHTML.trim() == "")
+			{
+				markCell(id, "o");
+				turn++;
+				setTimeout(function(){
+				if(!checkwin())
+				{
+					if(!isdraw())
+						markX();
+				}}, 500);
+			}
+		}
+		function markCell(num, p)
+		{
+			//alert("Marking cell "+num+" for "+p);
+			var x = document.getElementById(""+num);
+			if(p.toLowerCase() == "o")
+			{
+				x.style.background = "#FF5D00";
+				x.innerHTML = "O";
+				x.className = "selected";
+				x.style.cursor = "not-allowed";
+			}
+			else 
+			{
+				x.style.background = "#21beea";
+				x.innerHTML = "X";
+				x.className = "selected";
+				x.style.cursor = "not-allowed";
+			}
+		}
+		function make_2(a)
+		{
+			//alert("CALLED MAKE_2");
+			if(a[5] == 2)
+				return 5;
+			if(a[2] == 2)
+				return 2;
+			else if(a[4] == 2)
+				return 4;
+			else if(a[6] == 2)
+				return 6;
+			else if(a[8] == 2)
+				return 8;
+		}
+		
+		function checkwin(){
+			//alert("CALLED CHECKWIN");
+			var x1 = document.getElementById("1").innerHTML;
+			var x2 = document.getElementById("2").innerHTML;
+			var x3 = document.getElementById("3").innerHTML;
+			var x4 = document.getElementById("4").innerHTML;
+			var x5 = document.getElementById("5").innerHTML;
+			var x6 = document.getElementById("6").innerHTML;
+			var x7 = document.getElementById("7").innerHTML;
+			var x8 = document.getElementById("8").innerHTML;
+			var x9 = document.getElementById("9").innerHTML;
+			if(x1.trim() != "" && x1 === x2 && x2 === x3)
+			{
+				announcewinner(x1);
+				winner = 1;
+				return true;
+			}
+			else if(x4.trim() != "" && x4 === x5 && x5 === x6)
+			{
+				announcewinner(x4);
+				winner = 1;
+				return true;
+			}
+			else if(x7.trim() != "" && x7 === x8 && x8 === x9)
+			{
+				announcewinner(x7);
+				winner = 1;
+				return true;
+			}
+			else if(x1.trim() != "" && x1 === x4 && x4 === x7)
+			{
+				announcewinner(x1);
+				winner = 1;
+				return true;
+			}
+			else if(x2.trim() != "" && x2 === x5 && x5 === x8)
+			{
+				announcewinner(x2);
+				winner = 1;
+				return true;
+			}
+			else if(x3.trim() != "" && x3 === x6 && x6 === x9)
+			{
+				announcewinner(x3);
+				winner = 1;
+				return true;
+			}
+			else if(x1.trim() != "" && x1 === x5 && x5 === x9)
+			{
+				announcewinner(x1);
+				winner = 1;
+				return true;
+			}
+			else if(x3.trim() != "" && x3 === x5 && x5 === x7)
+			{
+				announcewinner(x3);
+				winner = 1;
+				return true;
+			}
+			else return false;
+		}
+		
+		function posswin(p, a)
+		{
+			//alert("CALLED posswing");
+			var check_val;
+			if(p==3)
+				check_val = 18;
+			else if(p == 5)
+				check_val = 50
+			//ROW CHECK
+			for(i=1;i<9;i+=3)
+			{
+				if(a[i]*a[i+1]*a[i+2] == check_val)
+				{
+					if(a[i] == 2)
+						return i;
+					else if(a[i+1] == 2)
+						return i+1;
+					else return i+2;
+				}
+			}
+			//COLUMN CHECK
+			for(i=1;i<=3;i++)
+			{
+				if(a[i]*a[i+3]*a[i+6] == check_val)
+				{
+					if(a[i] == 2)
+						return i;
+					else if(a[i+3] == 2)
+						return i+3;
+					else return i+6;
+				}
+			}
+			//DIAG CHECK
+			if(a[1]*a[5]*a[9] == check_val)
+			{
+				if(a[1] == 2)
+					return 1;
+				else if(a[5] == 2)
+					return 5;
+				else return 9;
+			}
+			if(a[3]*a[5]*a[7] == check_val)
+			{
+				if(a[3] == 2)
+					return 3;
+				else if(a[5] == 2)
+					return 5;
+				else return 7;
+			}
+			return 0;
+		}
+		
+		function markX()
+		{
+				//alert("called markX");
+				var a = [2,2,2,2,2,2,2,2,2,2];
+				var num;
+				var i=1;
+				for(i=1;i<=9;i++)
+				{
+					if(document.getElementById("" + i).innerHTML.trim() == "")
+						a[i] = 2;
+					else if(document.getElementById("" + i).innerHTML.trim() == "O")
+						a[i] = 3;
+					else if(document.getElementById("" + i).innerHTML.trim() == "X")
+						a[i] = 5;
+				}
+				if(turn == 2)
+				{
+					if(a[5] == 2)
+						num = 5;
+					else num = 1;
+				}
+				else if(turn == 4)
+				{
+					if(posswin(5,a) != 0)
+						num = posswin(5,a);
+					else num = make_2(a);
+				}
+				else if(turn == 6)
+				{
+					if(posswin(3,a) != 0)
+						num = posswin(3,a);
+					else if(posswin(5,a) != 0)
+						num = posswin(5,a);
+					else num = make_2(a);
+				}
+				else if(turn == 8)
+				{
+					if(posswin(3,a) != 0)
+						num = posswin(3,a);
+					else if(posswin(5,a) != 0)
+						num = posswin(5,a);
+					else 
+						{
+							for(i=1;i<=9;i++)
+								if(a[i] == 2)
+									num = i;
+						}
+				}
+				if(document.getElementById("" + num).innerHTML.trim() == "")
+					{
+						markCell(num, "x");
+						turn++
+						setTimeout(checkwin,500);
+					}
+		}
+		
+		function isdraw()
+		{
+			//alert('called isdraw');
+			var count = 0;
+			for(i=1;i<=9;i++)
+			{
+				if(document.getElementById(''+i).innerHTML.trim() != "")
+					count++;
+			}
+			if(count == 9)
+				{				
+					var banner = document.getElementById("dbanner");
+					banner.style.display = "block";
+					return true;
+				}
+			return false;
+			
+		}
+		
+		function announcewinner(name)
+		{
+			//alert("announcewinner");
+			var banner = document.getElementById("banner");
+			if(name.toLowerCase() == "o")
+			{
+				document.getElementById("msg").innerHTML = "Congratulations!!!";
+				document.getElementById("w").innerHTML = "YOU WON";
+				document.getElementById("wi").src = "amol.png";
+				document.getElementById("wn").innerHTML = "😎 Amol Priyavardhan 😎"
+				var score = document.getElementById('s1').innerHTML;
+				score = parseInt(score) + 1;
+				document.getElementById('s1').innerHTML = score;
+				banner.style.background = "linear-gradient(180deg, #5ABC35, #62CF39)";
+			}
+			else
+			{
+				document.getElementById("msg").innerHTML = "BETTER LUCK NEXT TIME!!!";
+				document.getElementById("w").innerHTML = "YOU LOSE";
+				document.getElementById("wi").src = "jarvis.jpg";
+				document.getElementById("wn").innerHTML = "😎 JARVIS WINS 😎";
+				var score = document.getElementById('s2').innerHTML;
+				score = parseInt(score) + 1;
+				document.getElementById('s2').innerHTML = score;
+				banner.style.background = "linear-gradient(180deg, #F3462B, #F52707)";
+			}
+			banner.style.display = "block"; 
+		}
+		
+		function clearBox(){
+			for(i=1;i<=9;i++)
+			{
+				if(document.getElementById("" + i).innerHTML != "")
+					{
+						var x = document.getElementById("" + i);
+						x.style.background = "#444";
+						x.innerHTML = "";
+						x.className = "";
+						x.style.cursor = "pointer";
+					}
+			}
+			turn = 1;
+			document.getElementById("banner").style.display = "none";
+			document.getElementById("banner").style.background = "white";
+			document.getElementById("dbanner").style.display = "none";
+		}
+		
+	</script>
+</head>
+<body onload="document.getElementById('banner').style.display='none;'document.getElementById('dbanner').style.display='none;';">
+	<div id="banner">
+		<h1 id="msg"></h1>
+		<h2 id="w"></h2>
+		<img id="wi" src=""/>
+		<p id="wn"></p>
+		<button onclick="clearBox();">Play Again</button>
+	</div>
+	<div id="dbanner">
+		<h1>🙁 It's a Draw 🙁</h1>
+		<button onclick="clearBox();">Play Again</button>
+	</div>
+	<div id="container">
+		<div class="pid" id="p1" style="border-right:1px solid rgba(0,0,0,0.4);">
+			<h1>P1 - The O</h1>
+			<img src="amol.png"/>
+			<p class="name">Amol Priyavardhan</p>
+			<p class="status">TIC-TAC-TOE god</p>
+			<p class="score">Score: <span id="s1">0</span></p>
+		</div>
+		<div class="pid" id="p2" style="border-left:1px solid rgba(0,0,0,0.4);">
+			<h1>P2 - The X</h1>
+			<img src="jarvis.jpg"/>
+			<p class="name">JARVIS</p>
+			<p class="status">MASTER OF GAMES</p>
+			<p class="score">Score: <span id="s2">0</span></p>
+		</div>
+		<p id="heading">TITATO</p>
+		<span id="subheading">The Ultimate Tic-Tac-Toe</span>
+		<div id="gc">
+			<table>
+				<tr cellspacing="6">
+					<td id="1" onclick="markO(1);"></td>
+					<td id="2" onclick="markO(2);"></td>
+					<td id="3" onclick="markO(3);" style="margin-right:2.5%;"></td>
+				</tr>
+				<tr>
+					<td id="4" onclick="markO(4);"></td>
+					<td id="5" onclick="markO(5);"></td>
+					<td id="6" onclick="markO(6);" style="margin-right:2.5%;"></td>
+				</tr>
+				<tr>
+					<td id="7" onclick="markO(7);"></td>
+					<td id="8" onclick="markO(8);"></td>
+					<td id="9" onclick="markO(9);" style="margin-right:2.5%;"></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
